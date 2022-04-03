@@ -1,5 +1,5 @@
 use core::{generate_access_token, rand, generate_reftesh_token, ErrorResponse};
-use std::{sync::Arc, collections::HashMap};
+use std::{sync::Arc, collections::HashMap, env};
 
 use actix_web::{HttpServer, App, middleware, HttpResponse, web::{self, Data}, post, Responder, http::StatusCode};
 use serde::{Serialize, Deserialize};
@@ -76,7 +76,8 @@ impl Default for TokenResponse {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()>  {
-    let secret = "supersecret_tokenSecretYoIcannotBeliefIt".to_owned();
+    let secret = env::var("ACTIX_JWT_SECRET").unwrap_or("jy<q|ezip5,Q%^xBZz{I|M*zdW}xX>|;:LMc<C{%`(b8wCI/#$h[#ws+/XLvnyq".to_owned());
+    let port = env::var("ACTIX_PORT").ok().map(|s| s.parse().ok()).flatten().unwrap_or(8080);
     let mut data = UserManager::default();
     data.add_user("Phil", "+Test12345").await;
     data.set_secret(&secret);
@@ -91,7 +92,7 @@ async fn main() -> std::io::Result<()>  {
             .service(refresh_token_route)
 
     })
-    .bind(("0.0.0.0", 8080))?
+    .bind(("0.0.0.0", port))?
     .run()
     .await
 }
