@@ -25,7 +25,7 @@ pub fn generate_reftesh_token<R: Rng + ?Sized>(r: &mut R) -> String {
 }
 
 pub fn generate_access_token(secret: &str, username: &str) -> String {
-    let exp = Utc::now().checked_add_signed(chrono::Duration::minutes(15)).unwrap().timestamp_millis() as usize;
+    let exp = Utc::now().checked_add_signed(chrono::Duration::minutes(15)).unwrap().timestamp() as usize;
     let claims = TokenClaims{username: username.to_owned(), user_id: 1337, exp};
     let token_str = encode(&Header::default(), &claims, &EncodingKey::from_secret(secret.as_bytes())).unwrap();
     token_str

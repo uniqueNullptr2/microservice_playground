@@ -1,0 +1,9 @@
+FROM rust:1.59 as builder
+WORKDIR /build
+COPY . .
+RUN cargo build --bin auth --release
+
+FROM photon:latest
+EXPOSE 8080
+COPY --from=builder /build/target/release/auth /usr/local/bin/auth
+CMD ["auth"]

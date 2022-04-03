@@ -1,0 +1,24 @@
+version: '3'
+services:
+  auth:
+    image: microservices/auth
+    build:
+      dockerfile: dockerfile.auth.develop
+      context: .
+    volumes:
+      - ./:/app
+    container_name: auth
+    restart: always
+    ports:
+      - "8080:8080"
+  anime:
+    image: microservices/anime
+    build:
+      dockerfile: dockerfile.anime.develop
+      context: .
+    volumes:
+      - ./:/app
+    container_name: anime
+    restart: always
+    ports:
+      - "8081:8080"

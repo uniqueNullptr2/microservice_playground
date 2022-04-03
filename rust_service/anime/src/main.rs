@@ -22,7 +22,7 @@ async fn main() -> std::io::Result<()>  {
 
 #[get("/authedhello")]
 async fn authed_hello(user: User) -> impl Responder {
-    format!("Hello {}", user.name)
+    format!("Hello there {}", user.name)
 }
 
 async fn health() -> HttpResponse {
